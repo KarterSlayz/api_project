@@ -2,6 +2,7 @@ import requests
 from endpoints.endpoint import Endpoint
 import json
 import os
+import allure
 
 
 class Authorize(Endpoint):
@@ -36,3 +37,14 @@ class Authorize(Endpoint):
             self.response = requests.Response()
             self.response.status_code = 200
         return self.token
+
+    @allure.step('Check create token.json')
+    def check_save_token_json(self):
+        with open(self.token_file, 'r') as file:
+            print(f'Token save: {json.load(file)['token']}')
+
+    @allure.step('Check valid token')
+    def check_valid_token(self):
+        response = requests.get(f'{self.url}/authorize/{self.token}')
+        assert response.status_code == 200
+        print(f'{self.token}', response.text)

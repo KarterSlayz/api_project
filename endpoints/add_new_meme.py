@@ -1,4 +1,5 @@
 import requests
+import allure
 from endpoints.endpoint import Endpoint
 
 
@@ -15,3 +16,10 @@ class AddMeme(Endpoint):
             self.json = self.response.json()
             self.meme_id = self.json['id']
         return self.json
+
+    @allure.step('Check create mem')
+    def check_create_mem(self, body):
+        common_items = {k: body[k] for k in body if k in self.json and body[k] == self.json[k]}
+        assert common_items
+        print(f'Mem created with data {body}')
+        print(f'Mem: {self.json}')
