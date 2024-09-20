@@ -17,12 +17,12 @@ class Endpoint:
 
     @allure.step('Check status code 400')
     def check_status_code_400(self):
-        assert AssertionError
+        assert self.response.status_code == 400
         print(f'\nTest return status code: {self.response.status_code}')
 
     @allure.step('Check status code 404')
     def check_status_code_404(self):
-        assert AssertionError
+        assert self.response.status_code == 404
         print(f'\nTest return status code: {self.response.status_code}')
 
     @allure.step('Print Error')
@@ -39,10 +39,3 @@ class Endpoint:
     def check_comparison_id(self, id_meme):
         assert str(id_meme) in self.response.text
         print(f'Search mem id: {id_meme} and result searching: {self.response.text}')
-
-    @allure.step('Check change mem')
-    def check_change_mem(self, body):
-        common_items = {k: body[k] for k in body if k in self.json and body[k] == self.json[k]}
-        assert common_items
-        print(f'Mem changed with data {body}')
-        print(f'Mem: {self.json}')

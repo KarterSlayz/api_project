@@ -41,6 +41,7 @@ class Authorize(Endpoint):
     @allure.step('Check create token.json')
     def check_save_token_json(self):
         with open(self.token_file, 'r') as file:
+            assert json.load(file)['token'] == self.token
             print(f'Token save: {json.load(file)['token']}')
 
     @allure.step('Check valid token')

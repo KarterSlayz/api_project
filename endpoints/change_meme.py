@@ -1,3 +1,4 @@
+import allure
 import requests
 from endpoints.endpoint import Endpoint
 
@@ -12,3 +13,10 @@ class ChangeMeme(Endpoint):
         )
         self.json = self.response.json()
         return self.json
+
+    @allure.step('Check change mem')
+    def check_change_mem(self, body):
+        common_items = {k: body[k] for k in body if k in self.json and body[k] == self.json[k]}
+        assert common_items
+        print(f'Mem changed with data {body}')
+        print(f'Mem: {self.json}')
